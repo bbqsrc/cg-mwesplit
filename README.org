@@ -1,0 +1,5 @@
+This should:
+
+- [ ] read cg format
+- [ ] split MWE's into their own cohorts (MWE's being marked by having
+  wordforms on their (sub)readings
