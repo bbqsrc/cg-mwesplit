@@ -31,6 +31,7 @@
 #include <regex>
 #include <unordered_map>
 #include <exception>
+#include <iostream>
 
 namespace gtd {
 
