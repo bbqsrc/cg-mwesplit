@@ -20,27 +20,16 @@
 #define b3c2d0b8add5c9cb_MWESPLIT_H
 
 
-#include "util.hpp"
-
 #include <locale>
 #include <codecvt>
 
 #include <vector>
 #include <string>
-#include <algorithm>
 #include <regex>
-#include <unordered_map>
-#include <exception>
 #include <iostream>
+#include <set>
 
 namespace gtd {
-
-typedef std::set<std::u16string> UStringSet;
-typedef std::unordered_map<std::string, std::unordered_map<std::u16string, std::u16string> > msgmap;
-
-enum LineType {
-	WordformL, ReadingL, BlankL
-};
 
 void run(std::istream& is, std::ostream& os);
 

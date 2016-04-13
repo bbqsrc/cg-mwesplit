@@ -31,13 +31,10 @@ int main(int argc, char ** argv)
 		options.add_options()
 			("i,input", "Input file (UNIMPLEMENTED, stdin for now)", cxxopts::value<std::string>(), "FILE")
 			("o,output", "Output file (UNIMPLEMENTED, stdout for now)", cxxopts::value<std::string>(), "FILE")
-			("v,verbose", "Be verbose")
 			("h,help", "Print help")
 			;
 
 		std::vector<std::string> pos = {
-			"generator",
-			"messages"
 			//"input"
 			//"output"
 		};
@@ -55,8 +52,6 @@ int main(int argc, char ** argv)
 			std::cout << options.help({""}) << std::endl;
 			return(EXIT_SUCCESS);
 		}
-
-		bool verbose = options.count("v");
 
 		gtd::run(std::cin, std::cout);
 	}
