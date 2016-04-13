@@ -26,7 +26,7 @@ const std::basic_regex<char> CG_LINE ("^"
 				      "|(\t+)(\"[^\"]*\"\\S*)(\\s+\\S+)*" // reading, group 3, 4, 5
 				      ")");
 
-const std::basic_regex<char> CG_WFTAG (".*\\s+\"<(.*)>\"");
+const std::basic_regex<char> CG_WFTAG (".*(\\s+\"<(.*)>\")");
 
 struct Reading {
 		std::string ana;
@@ -38,15 +38,16 @@ struct Cohort {
 		std::vector<std::vector<Reading> > readings;
 };
 
-const std::string wftag(const std::string line)
+const std::pair<std::string, std::string> extr_wftag(const std::string line)
 {
 	std::match_results<const char*> result;
 	std::regex_match(line.c_str(), result, CG_WFTAG);
-	if(!result.empty() && result[1].length() != 0) {
-		return result[1];
+	if(!result.empty() && result[2].length() != 0) {
+		std::string rest = line.substr(0, result.position(1)) + line.substr(result.position(1)+result.length(1));
+		return std::make_pair(rest, result[2]);
 	}
 	else {
-		return "";	// TODO: what if there's an empty wftag? call it a bug?
+		return std::make_pair(line, "");	// TODO: what if there's an empty wftag? call it a bug?
 	}
 }
 
@@ -122,8 +123,8 @@ void run(std::istream& is, std::ostream& os)
 			indentation = 0;
 		}
 		else if(!result.empty() && result[3].length() != 0) {
-			auto rwf = wftag(line);
-			Reading r = { line, rwf };
+			auto ana_wf = extr_wftag(line);
+			Reading r = { ana_wf.first, ana_wf.second };
 			if(cohort.readings.empty()) {
 				cohort.readings.push_back({r});
 			}
