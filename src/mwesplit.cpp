@@ -63,6 +63,11 @@ const void print_cohort(std::ostream& os, const Cohort& c) {
 	}
 }
 
+const std::string reindent(const std::string ana, const size_t level) {
+	std::string indent = std::string(level+1, '\t');
+	return indent + ana.substr(ana.find("\""));
+}
+
 const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 	std::vector<Cohort> cos;
 	for(const auto& r : mwe.readings) {
@@ -80,14 +85,11 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 				if(cos[pos].form != s.wftag) {
 					std::cerr << "WARNING: Ambiguous word form tags for same cohort " << cos[pos].form << " vs " << s.wftag << std::endl;
 				}
+				cos[pos].readings.push_back({});
 			}
-			Reading n = { s.ana, "" };
-			if(cos[pos].readings.empty()) {
-				cos[pos].readings.push_back({n});
-			}
-			else {
-				cos[pos].readings.back().push_back({n});
-			}
+			size_t level = cos[pos].readings.back().size();
+			Reading n = { reindent(s.ana, level), "" };
+			cos[pos].readings.back().push_back(n);
 		}
 	}
 	// The last word forms are the top readings:
