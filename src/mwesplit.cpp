@@ -20,10 +20,9 @@
 namespace gtd {
 
 
-// TODO: We don't handle readings initiated by spaces (should we?)
 const std::basic_regex<char> CG_LINE ("^"
 				      "(\"<(.*)>\".*" // wordform, group 2
-				      "|(\t+)(\"[^\"]*\"\\S*)(\\s+\\S+)*" // reading, group 3, 4, 5
+				      "|([\t ]+)(\"[^\"]*\"\\S*)(\\s+\\S+)*" // reading, group 3, 4, 5
 				      ")");
 
 const std::basic_regex<char> CG_WFTAG (".*(\\s+\"<(.*)>\")");
