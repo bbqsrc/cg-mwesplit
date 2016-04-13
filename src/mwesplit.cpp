@@ -36,6 +36,7 @@ struct Reading {
 struct Cohort {
 		std::string form;
 		std::vector<std::vector<Reading> > readings;
+		std::string postblank;
 };
 
 const std::pair<std::string, std::string> extr_wftag(const std::string line)
@@ -62,11 +63,22 @@ const void print_cohort(std::ostream& os, const Cohort& c) {
 			print_reading(os, s);
 		}
 	}
+	if(!c.postblank.empty()) {
+		os << ":" << c.postblank << std::endl;
+	}
 }
 
 const std::string reindent(const std::string ana, const size_t level) {
 	std::string indent = std::string(level+1, '\t');
 	return indent + ana.substr(ana.find("\""));
+}
+
+
+const Cohort cohort_from_wftag(const std::string form) {
+	// Treats any trailing blanks as if they should be in between
+	// words (TODO: only do this for non-final words?)
+	size_t i = form.find_last_not_of(" \n\r\t")+1;
+	return { form.substr(0, i), {}, form.substr(i) };
 }
 
 const std::vector<Cohort> split_cohort(const Cohort& mwe) {
@@ -80,11 +92,12 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 		for(const auto& s : r) {
 			if(!s.wftag.empty()) {
 				++pos;
+				Cohort c = cohort_from_wftag(s.wftag);
 				while(cos.size() < pos+1) {
-					cos.push_back({ s.wftag, {} });
+					cos.push_back(c);
 				}
-				if(cos[pos].form != s.wftag) {
-					std::cerr << "WARNING: Ambiguous word form tags for same cohort " << cos[pos].form << " vs " << s.wftag << std::endl;
+				if(cos[pos].form != c.form) {
+					std::cerr << "WARNING: Ambiguous word form tags for same cohort, '" << cos[pos].form << "' vs '" << s.wftag << "'"<< std::endl;
 				}
 				cos[pos].readings.push_back({});
 			}
@@ -112,14 +125,14 @@ void run(std::istream& is, std::ostream& os)
 {
 	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utf16conv;
 	std::ostringstream ss;
-	Cohort cohort = { "", {} };
+	Cohort cohort = { "", {}, "" };
 	size_t indentation = 0;
 	for (std::string line; std::getline(is, line);) {
 		std::match_results<const char*> result;
 		std::regex_match(line.c_str(), result, CG_LINE);
 		if(!result.empty() && result[2].length() != 0) {
 			split_and_print(os, cohort);
-			cohort = { result[2], {} };
+			cohort = { result[2], {}, "" };
 			indentation = 0;
 		}
 		else if(!result.empty() && result[3].length() != 0) {
