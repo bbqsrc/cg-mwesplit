@@ -81,12 +81,21 @@ const Cohort cohort_from_wftag(const std::string form) {
 }
 
 const std::vector<Cohort> split_cohort(const Cohort& mwe) {
+	size_t n_wftags = 0;
+	for(const auto& r : mwe.readings) {
+		if(!r.empty() && !r.front().wftag.empty()) {
+			++n_wftags;
+		}
+	}
+	if(n_wftags < mwe.readings.size()) {
+		if(n_wftags > 0) {
+			std::cerr << "WARNING: Only some main-readings had wordform tags, not splitting."<< std::endl;
+		}
+		return { mwe };
+	}
+
 	std::vector<Cohort> cos;
 	for(const auto& r : mwe.readings) {
-		if(!r.empty() && r.front().wftag.empty()) {
-			// head reading without wordform => not mwe (or buggy input), don't split
-			return { mwe };
-		}
 		size_t pos = -1;
 		for(const auto& s : r) {
 			if(!s.wftag.empty()) {
