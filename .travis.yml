@@ -1,5 +1,9 @@
 language: cpp
 
+# Ubuntu 14.04 Trusty support, for C++11 (clang at least)
+sudo: required
+dist: trusty
+
 compiler:
   - clang
   - gcc
