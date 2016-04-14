@@ -1,4 +1,4 @@
-AC_INIT([CG MWE-split], [0.1.0], [unhammer+apertium@mm.st], [cg-mwesplit], [http://giellatekno.uit.no/bugzilla/show_bug.cgi?id=2165])
+AC_INIT([CG MWE-split], [0.1.0], [unhammer+apertium@mm.st], [cg-mwesplit], [https://github.com/unhammer/cg-mwesplit])
 AC_CONFIG_SRCDIR([src/main.cpp])
 AM_INIT_AUTOMAKE
 
