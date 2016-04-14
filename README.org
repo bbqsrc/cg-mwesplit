@@ -15,6 +15,9 @@ For examples of input/output, see the files in =test/=, e.g.
 
   Tested with gcc-5.2.0, gcc-5.3.1 and clang-703.0.29.
 
+  (Should work all the way down to gcc-4.9, but will fail with e.g.
+  gcc-4.8.4 or clang-3.5.0.)
+
 * Building
 
 #+BEGIN_SRC sh
@@ -37,3 +40,10 @@ step that disambiguates multiwords using =vislcg3=:
 #+BEGIN_SRC sh
 echo words go here | hfst-tokenise -wacku: tokeniser.pmhfst | vislcg3 -g mwe-dis.cg3 | cg-mwesplit
 #+END_SRC
+
+* Troubleshooting
+
+If you get
+: terminate called after throwing an instance of 'std::regex_error'
+:   what():  regex_error
+then your C++ compiler is too old. See [[*Prerequisites][Prerequisites]].
