@@ -3,3 +3,8 @@
 	"3" Num Acc
 "<.>"
 	"." PUNCT
+: 
+"<3>"
+	"3" Num Nom
+"<.>"
+	"." PUNCT

@@ -57,9 +57,16 @@ const void print_reading(std::ostream& os, const Reading& r) {
 
 const void print_cohort(std::ostream& os, const Cohort& c) {
 	os << "\"<" << c.form << ">\"" << std::endl;
+	std::set<std::string> seen;
 	for(auto &r : c.readings) {
+		std::ostringstream subs;
 		for(auto &s : r) {
-			print_reading(os, s);
+			print_reading(subs, s);
+		}
+		auto sub = subs.str();
+		if(seen.count(sub) == 0) {
+			os << sub;
+			seen.insert(sub);
 		}
 	}
 	if(!c.postblank.empty()) {
