@@ -138,8 +138,6 @@ const void split_and_print(std::ostream& os, const Cohort& c, const unsigned int
 
 void run(std::istream& is, std::ostream& os)
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utf16conv;
-	std::ostringstream ss;
 	Cohort cohort = { "", {}, "" };
 	size_t indentation = 0;
 	unsigned int lno = 0;
