@@ -11,8 +11,9 @@ For examples of input/output, see the files in =test/=, e.g.
 [[file:input.dalle_go.cg][input.dalle_go.cg]].
 
 * Prerequisites
-  A C++ compiler that goes all the way to 11 (tested at least back to
-  gcc 5.2.0).
+  A C++ compiler that goes all the way to 11.
+
+  Tested with gcc-5.2.0, gcc-5.3.1 and clang-703.0.29.
 
 * Building
 

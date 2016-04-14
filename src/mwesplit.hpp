@@ -27,6 +27,7 @@
 #include <string>
 #include <regex>
 #include <iostream>
+#include <sstream>
 #include <set>
 
 namespace gtd {
