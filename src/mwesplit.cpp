@@ -80,7 +80,7 @@ const Cohort cohort_from_wftag(const std::string form) {
 	return { form.substr(0, i), {}, form.substr(i) };
 }
 
-const std::vector<Cohort> split_cohort(const Cohort& mwe) {
+const std::vector<Cohort> split_cohort(const Cohort& mwe, const unsigned int lno) {
 	size_t n_wftags = 0;
 	for(const auto& r : mwe.readings) {
 		if(!r.empty() && !r.front().wftag.empty()) {
@@ -89,7 +89,7 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 	}
 	if(n_wftags < mwe.readings.size()) {
 		if(n_wftags > 0) {
-			std::cerr << "WARNING: Only some main-readings had wordform tags, not splitting."<< std::endl;
+			std::cerr << "WARNING: Line " << lno << ": Some but not all main-readings had wordform tags, not splitting."<< std::endl;
 		}
 		return { mwe };
 	}
@@ -105,7 +105,7 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 					cos.push_back(c);
 				}
 				if(cos[pos].form != c.form) {
-					std::cerr << "WARNING: Ambiguous word form tags for same cohort, '" << cos[pos].form << "' vs '" << s.wftag << "'"<< std::endl;
+					std::cerr << "WARNING: Line " << lno << ": Ambiguous word form tags for same cohort, '" << cos[pos].form << "' vs '" << s.wftag << "'"<< std::endl;
 				}
 				cos[pos].readings.push_back({});
 			}
@@ -119,9 +119,9 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe) {
 	return cos;
 }
 
-const void split_and_print(std::ostream& os, const Cohort& c) {
+const void split_and_print(std::ostream& os, const Cohort& c, const unsigned int lno) {
 	if(!c.form.empty()) {
-		const std::vector<Cohort> cos = split_cohort(c);
+		const std::vector<Cohort> cos = split_cohort(c, lno);
 		for(auto& c : cos) {
 			print_cohort(os, c);
 		}
@@ -135,11 +135,13 @@ void run(std::istream& is, std::ostream& os)
 	std::ostringstream ss;
 	Cohort cohort = { "", {}, "" };
 	size_t indentation = 0;
+	unsigned int lno = 0;
 	for (std::string line; std::getline(is, line);) {
+		++lno;
 		std::match_results<const char*> result;
 		std::regex_match(line.c_str(), result, CG_LINE);
 		if(!result.empty() && result[2].length() != 0) {
-			split_and_print(os, cohort);
+			split_and_print(os, cohort, lno);
 			cohort = { result[2], {}, "" };
 			indentation = 0;
 		}
@@ -161,13 +163,13 @@ void run(std::istream& is, std::ostream& os)
 			indentation = result[3].length();
 		}
 		else {
-			split_and_print(os, cohort);
+			split_and_print(os, cohort, lno);
 			cohort = { "", {} };
 			indentation = 0;
 			os << line << std::endl;
 		}
 	}
 
-	split_and_print(os, cohort);
+	split_and_print(os, cohort, lno);
 }
 }
