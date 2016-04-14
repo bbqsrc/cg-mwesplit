@@ -1,5 +1,38 @@
-This should:
+#+TITLE: cg-mwesplit
+#+STARTUP: showall
 
-- [ ] read cg format
-- [ ] split MWE's into their own cohorts (MWE's being marked by having
-  wordforms on their (sub)readings
+* Description
+
+This program reads input in Constraint Grammar format, and splits
+special "multiword cohorts" into separate cohorts, leaving other
+cohorts and intervening blanks as they were.
+
+For examples of input/output, see the files in =test/=, e.g.
+[[file:input.dalle_go.cg][input.dalle_go.cg]].
+
+* Prerequisites
+  A C++ compiler that goes all the way to 11 (tested at least back to
+  gcc 5.2.0).
+
+* Building
+
+#+BEGIN_SRC sh
+./autogen.sh
+./configure  # optionally with argument --prefix=$HOME/my/prefix
+make
+make install # with sudo if you didn't specify a prefix
+#+END_SRC
+
+* Usage
+
+  Takes no options, just stdin and stdout:
+#+BEGIN_SRC sh
+cg-mwesplit < infile > outfile
+#+END_SRC
+
+More typically, it'll be in a pipeline after =hfst-tokenise= and some
+step that disambiguates multiwords using =vislcg3=:
+
+#+BEGIN_SRC sh
+echo words go here | hfst-tokenise -wacku: tokeniser.pmhfst | vislcg3 -g mwe-dis.cg3 | cg-mwesplit
+#+END_SRC
