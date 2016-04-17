@@ -1,6 +1,9 @@
 #+TITLE: cg-mwesplit
 #+STARTUP: showall
 
+#+CAPTION: Build Status
+[[https://travis-ci.org/unhammer/cg-mwesplit][https://travis-ci.org/unhammer/cg-mwesplit.svg]]
+
 * Description
 
 This program reads input in Constraint Grammar format, and splits
