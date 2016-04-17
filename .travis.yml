@@ -1,16 +1,21 @@
 language: cpp
 
-# Ubuntu 14.04 Trusty support, for C++11 (clang at least)
+# Ubuntu 14.04 Trusty
 sudo: required
 dist: trusty
 
 compiler:
-  - clang
-  - gcc
+    - clang
+    - gcc
 
 os:
-- linux
-- osx
+    - linux
+    - osx
 
 before_script:
-- ./autogen.sh
+    - ./autogen.sh
+
+matrix:
+    - allow_failures:
+        - os: linux
+# Trusty doesn't have C++11, gcc nor clang :-/
