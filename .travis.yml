@@ -1,6 +1,6 @@
 language: cpp
 
-# Ubuntu 14.04 Trusty
+# let linux be Ubuntu 14.04 Trusty
 sudo: required
 dist: trusty
 
@@ -15,7 +15,17 @@ os:
 before_script:
     - ./autogen.sh
 
-matrix:
-    allow_failures:
-        - os: linux
-# Trusty doesn't have C++11, gcc nor clang :-/
+
+# Trusty's default gcc doesn't have C++11
+install:
+- if [[ "$TRAVIS_OS_NAME" = "linux" && "$CXX" = "g++" ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.9
+    - g++-4.9
+    - libstdc++-4.9-dev
+    - clang
