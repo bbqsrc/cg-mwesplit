@@ -41,7 +41,7 @@ More typically, it'll be in a pipeline after =hfst-tokenise= and some
 step that disambiguates multiwords using =vislcg3=:
 
 #+BEGIN_SRC sh
-echo words go here | hfst-tokenise -wacku: tokeniser.pmhfst | vislcg3 -g mwe-dis.cg3 | cg-mwesplit
+echo words go here | hfst-tokenise --gtd tokeniser.pmhfst | vislcg3 -g mwe-dis.cg3 | cg-mwesplit
 #+END_SRC
 
 * Troubleshooting
