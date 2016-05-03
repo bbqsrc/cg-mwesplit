@@ -22,10 +22,11 @@ namespace gtd {
 
 const std::basic_regex<char> CG_LINE ("^"
 				      "(\"<(.*)>\".*" // wordform, group 2
-				      "|([\t ]+)(\"[^\"]*\"\\S*)(\\s+\\S+)*" // reading, group 3, 4, 5
+				      "|([\t ]+)(\"[^\"]*\"\\S*)(\\s+\\S+)*.*" // reading, group 3, 4, 5
+				      "|(;[\t ]+.*)" // removed reading, group 6
 				      ")");
 
-const std::basic_regex<char> CG_WFTAG (".*(\\s+\"<(.*)>\")");
+const std::basic_regex<char> CG_WFTAG (".*(\\s+\"<(.*)>\").*");
 
 struct Reading {
 		std::string ana;
@@ -166,6 +167,10 @@ void run(std::istream& is, std::ostream& os)
 				cohort.readings.push_back({r});
 			}
 			indentation = result[3].length();
+		}
+		else if(!result.empty() && result[6].length() != 0) {
+			// We just skip removed readings; don't output them.
+			// (Might have to output commented word forms then ...)
 		}
 		else {
 			split_and_print(os, cohort, lno);

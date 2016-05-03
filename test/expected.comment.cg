@@ -1,0 +1,5 @@
+"<dalle>"
+	"dalle" Adv Sem/Time <W:0> REMOVE:foo
+: 
+"<go>"
+	"go" CS <W:0> REMOVE:foo

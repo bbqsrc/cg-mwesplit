@@ -1,0 +1,5 @@
+"<dalle go>"
+	"go" CS <W:0> "<go>" REMOVE:foo
+		"dalle" Adv Sem/Time <W:0> "<dalle >" REMOVE:foo
+;	"go" Pcle Qst <W:0> "<go>" REMOVE:foo
+;		"dalle" Adv Sem/Time <W:0> "<dalle >" REMOVE:foo
