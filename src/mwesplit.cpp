@@ -97,7 +97,7 @@ const std::vector<Cohort> split_cohort(const Cohort& mwe, const unsigned int lno
 	}
 	if(n_wftags < mwe.readings.size()) {
 		if(n_wftags > 0) {
-			std::cerr << "WARNING: Line " << lno << ": Some but not all main-readings had wordform tags, not splitting."<< std::endl;
+			std::cerr << "WARNING: Line " << lno << ": Some but not all main-readings of \"<" << mwe.form << ">\" had wordform-tags (not completely mwe-disambiguated?), not splitting."<< std::endl;
 		}
 		return { mwe };
 	}
